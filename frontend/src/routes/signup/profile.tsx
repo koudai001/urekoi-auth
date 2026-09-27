@@ -12,12 +12,14 @@ import {
   profileSchema,
   type ProfileFormValues,
 } from "../../components/signup/profile/profile-schema";
+import { apiClient, SERVER_ERROR_MESSAGE } from "../../lib/api-client";
 
 export const Route = createFileRoute("/signup/profile")({
   component: SignupProfile,
 });
 
-type Step = "intro" | "gender" | "birthday" | "location" | "nickname" | "confirm";
+type Step =
+  "intro" | "gender" | "birthday" | "location" | "nickname" | "confirm";
 
 function SignupProfile() {
   const form = useForm<ProfileFormValues>({
@@ -31,11 +33,40 @@ function SignupProfile() {
   });
   const [step, setStep] = useState<Step>("intro");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  // TODO: バックエンドにPOST /myprofileができたらここで呼び出す。今はフロントの流れだけ作る
-  const handleCreateProfile = () => {
+  const handleCreateProfile = async () => {
     setIsSubmitting(true);
+    setErrorMessage(null);
+    const values = form.getValues();
+
+    const res = await apiClient.api.myprofile.$post({
+      json: {
+        nickname: values.nickname,
+        gender: values.gender!,
+        birthdate: `${values.birthYear}-${values.birthMonth.padStart(2, "0")}-${values.birthDay.padStart(2, "0")}`,
+        prefectureCode: values.prefectureCode!,
+      },
+    });
+
+    if (!res.ok) {
+      setIsSubmitting(false);
+      switch (res.status) {
+        case 400:
+          setErrorMessage("入力内容に誤りがあります。");
+          break;
+        case 500:
+          setErrorMessage(SERVER_ERROR_MESSAGE);
+          break;
+        default:
+          // exhaustive check
+          const _exhaustiveCheck: never = res;
+          throw new Error(`Unexpected status code: ${_exhaustiveCheck}`);
+      }
+      return;
+    }
+
     navigate({ to: "/" });
   };
 
@@ -69,6 +100,7 @@ function SignupProfile() {
             onBack={() => setStep("nickname")}
             onNext={handleCreateProfile}
             isSubmitting={isSubmitting}
+            errorMessage={errorMessage}
           />
         )}
       </main>

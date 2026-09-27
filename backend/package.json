@@ -1,6 +1,7 @@
 {
   "name": "urekoi2-backend",
   "type": "module",
+  "types": "./src/index.tsx",
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy --minify",
