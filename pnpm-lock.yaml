@@ -72,6 +72,9 @@ importers:
       better-auth:
         specifier: ^1.7.3
         version: 1.7.3(react-dom@19.3.0)(react@19.3.0)
+      hono:
+        specifier: ^4.13.7
+        version: 4.13.7
       lucide-react:
         specifier: ^1.47.0
         version: 1.47.0(react@19.3.0)
@@ -112,6 +115,9 @@ importers:
       typescript:
         specifier: ^7.0.2
         version: 7.0.2
+      urekoi2-backend:
+        specifier: workspace:*
+        version: link:../backend
       vite:
         specifier: ^8.3.0
         version: 8.3.0(@types/node@26.4.1)(tsx@4.23.13)

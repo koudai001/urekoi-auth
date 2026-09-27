@@ -14,10 +14,12 @@ export function SignupConfirm({
   onBack,
   onNext,
   isSubmitting,
+  errorMessage,
 }: {
   onBack: () => void;
   onNext: () => void;
   isSubmitting: boolean;
+  errorMessage: string | null;
 }) {
   const { watch } = useFormContext<ProfileFormValues>();
   const nickname = watch("nickname");
@@ -59,6 +61,12 @@ export function SignupConfirm({
             <dd className="text-base font-bold">{prefectureName}</dd>
           </div>
         </dl>
+
+        {errorMessage && (
+          <p className="mt-4 text-sm font-medium text-error">
+            {errorMessage}
+          </p>
+        )}
 
         <div className="mt-8">
           <Button type="button" disabled={isSubmitting} onClick={onNext}>
