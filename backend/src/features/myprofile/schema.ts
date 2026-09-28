@@ -1,4 +1,6 @@
-import { z } from "zod";
+import { z } from "@hono/zod-openapi";
+import { createSelectSchema } from "drizzle-zod";
+import { profile } from "../../db/schema/profile";
 
 export const createProfileSchema = z.object({
   nickname: z.string().trim().min(1).max(20),
@@ -8,3 +10,5 @@ export const createProfileSchema = z.object({
 });
 
 export type CreateProfileInput = z.infer<typeof createProfileSchema>;
+
+export const profileResponseSchema = createSelectSchema(profile);
