@@ -1,6 +1,4 @@
 ## 技術構成(monorepo)
-
-- 方針: パフォーマンス最優先
 - frontend（SPAの静的配信）: React / TanStack Router / TanStack Query / react-hook-form
 - backend（API）: Hono / Cloudflare Workers / Drizzle ORM / Turso(libSQL、マルチリージョンread replica) / better-auth
 - infra: Cloudflare Workers（同一オリジン）
